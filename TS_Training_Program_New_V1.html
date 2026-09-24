@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Movable Ink — TS New Hire Training</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:14px;
+  min-height:100vh;
+  background:#0e0e12;
+  background-image:
+    radial-gradient(ellipse 70% 55% at 8% 2%, rgba(227,28,121,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 92% 98%, rgba(83,74,183,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 35% at 55% 55%, rgba(15,110,86,0.09) 0%, transparent 65%);
+  color:#f0f0f0;
+}
+
+/* ── HEADER ── */
+.mi-header{
+  display:flex;align-items:center;gap:14px;
+  padding:13px 20px;
+  background:rgba(14,14,18,0.88);
+  border-bottom:1px solid rgba(227,28,121,0.22);
+  backdrop-filter:blur(10px);
+  position:sticky;top:0;z-index:100;
+}
+.mi-logo{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.mi-wordmark{font-size:15px;font-weight:800;color:#fff;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;gap:5px;line-height:1}
+.mi-ink-block{background:#E31C79;color:#fff;padding:3px 7px;border-radius:2px;font-weight:800;letter-spacing:1.5px;font-size:15px}
+.mi-sep{width:1px;height:26px;background:rgba(255,255,255,0.13);flex-shrink:0}
+.mi-prog-title{font-size:13px;font-weight:600;color:#fff}
+.mi-prog-sub{font-size:11px;color:rgba(255,255,255,0.42);margin-top:1px}
+.mi-pill{margin-left:auto;font-size:10px;padding:3px 10px;border-radius:20px;
+  background:rgba(227,28,121,0.14);border:0.5px solid rgba(227,28,121,0.38);
+  color:#E31C79;white-space:nowrap;flex-shrink:0}
+
+/* ── CONTENT CARD ── */
+.card{
+  margin:16px;
+  padding:18px 16px;
+  background:rgba(18,18,24,0.80);
+  border:0.5px solid rgba(255,255,255,0.07);
+  border-radius:14px;
+  backdrop-filter:blur(6px);
+}
+
+/* ── TOP TABS ── */
+.tab-row{display:flex;border-bottom:1px solid rgba(255,255,255,0.09);margin-bottom:1.1rem}
+.tab{padding:8px 16px;font-size:13px;color:rgba(255,255,255,0.42);cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color .15s,border-color .15s}
+.tab:hover{color:rgba(255,255,255,0.7)}
+.tab.active{color:#fff;font-weight:500;border-bottom-color:#E31C79}
+.view{display:none}.view.show{display:block}
+
+/* ── WEEK PILLS ── */
+.week-tab-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.week-tab{padding:5px 14px;font-size:12px;border-radius:20px;
+  border:0.5px solid rgba(255,255,255,0.11);color:rgba(255,255,255,0.45);
+  cursor:pointer;transition:all .15s;background:rgba(255,255,255,0.03)}
+.week-tab:hover{border-color:rgba(227,28,121,0.4);color:rgba(255,255,255,0.75)}
+.week-tab.active{border-color:#E31C79;background:rgba(227,28,121,0.12);color:#E31C79;font-weight:500}
+.week-panel{display:none}.week-panel.show{display:block}
+
+/* ── PLATFORM TABS ── */
+.plat-tab-row{display:flex;border-bottom:0.5px solid rgba(255,255,255,0.08);margin-bottom:1rem}
+.plat-tab{display:flex;align-items:center;gap:6px;padding:7px 16px;font-size:12px;
+  color:rgba(255,255,255,0.38);cursor:pointer;border-bottom:2px solid transparent;
+  margin-bottom:-1px;transition:color .15s,border-color .15s}
+.plat-tab:hover{color:rgba(255,255,255,0.65)}
+.plat-tab.st.active{color:#34d399;border-bottom-color:#34d399;font-weight:500}
+.plat-tab.dv.active{color:#a78bfa;border-bottom-color:#a78bfa;font-weight:500}
+.plat-dot{width:7px;height:7px;border-radius:50%}
+.plat-panel{display:none}.plat-panel.show{display:block}
+
+/* ── MODULE BOX ── */
+.mod-box{background:rgba(255,255,255,0.035);border:0.5px solid rgba(255,255,255,0.07);border-radius:12px;padding:15px}
+.mod-title{font-size:14px;font-weight:600;color:#fff;margin-bottom:3px}
+.layer-badge{display:inline-block;font-size:10px;padding:2px 9px;border-radius:10px;margin-bottom:8px}
+.l1{background:rgba(167,139,250,0.15);color:#a78bfa}
+.l2{background:rgba(227,28,121,0.13);color:#f472b6}
+.l3{background:rgba(52,211,153,0.13);color:#34d399}
+.mod-obj{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.55;margin-bottom:2px}
+
+/* ── SECTION LABEL ── */
+.sec-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+  color:rgba(255,255,255,0.28);margin:13px 0 6px}
+
+/* ── RESOURCE ROWS (table for aligned Open links) ── */
+.res-block{display:table;border-collapse:separate;border-spacing:0 4px}
+.res-row{display:table-row}
+.res-i{display:table-cell;font-size:12px;color:rgba(255,255,255,0.35);
+  padding:6px 7px 6px 9px;vertical-align:middle;white-space:nowrap;
+  background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.07);
+  border-right:none;border-radius:7px 0 0 7px}
+.res-t{display:table-cell;font-size:12px;color:rgba(255,255,255,0.6);
+  padding:6px 8px;vertical-align:middle;white-space:nowrap;
+  background:rgba(255,255,255,0.04);border-top:0.5px solid rgba(255,255,255,0.07);
+  border-bottom:0.5px solid rgba(255,255,255,0.07)}
+.res-a{display:table-cell;font-size:11px;color:#E31C79;text-decoration:none;
+  padding:6px 9px 6px 7px;vertical-align:middle;white-space:nowrap;
+  background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.07);
+  border-left:none;border-radius:0 7px 7px 0}
+.res-a:hover{color:#ff5fa3}
+
+/* ── TOPIC LIST ── */
+.topic-list{display:flex;flex-direction:column;gap:5px}
+.topic-row{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5}
+.t-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.22);flex-shrink:0;margin-top:6px}
+
+/* ── CASE CARDS ── */
+.case-card{border:0.5px solid rgba(255,255,255,0.07);border-radius:9px;
+  padding:10px 12px;margin-bottom:5px;background:rgba(255,255,255,0.03)}
+.case-top{display:flex;align-items:center;gap:7px;margin-bottom:4px;flex-wrap:wrap}
+.c-badge{font-size:10px;padding:2px 7px;border-radius:7px;white-space:nowrap;flex-shrink:0}
+.zd{background:rgba(227,28,121,0.12);color:#f472b6}
+.sl{background:rgba(83,74,183,0.18);color:#a78bfa}
+.case-title{font-size:12px;font-weight:500;color:#fff}
+.case-body{font-size:11px;color:rgba(255,255,255,0.48);line-height:1.5;margin-bottom:5px}
+.case-links{display:flex;gap:8px;flex-wrap:wrap}
+.case-link{font-size:11px;color:#E31C79;text-decoration:none}
+.case-link:hover{color:#ff5fa3}
+
+/* ── MILESTONE ── */
+.ms-box{background:rgba(227,28,121,0.07);border:0.5px solid rgba(227,28,121,0.28);
+  border-radius:8px;padding:10px 12px;margin-top:12px}
+.ms-title{font-size:11px;font-weight:600;color:#E31C79;margin-bottom:4px}
+.ms-text{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:6px;line-height:1.5}
+.ms-item{display:flex;align-items:flex-start;gap:6px;font-size:11px;color:rgba(255,255,255,0.55);margin-bottom:3px}
+.ms-check{color:#E31C79;flex-shrink:0}
+
+/* ── QUIZ BUTTON ── */
+.quiz-btn{margin-top:12px;width:100%;padding:8px 12px;font-size:12px;
+  border:0.5px solid rgba(255,255,255,0.13);border-radius:8px;
+  background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.8);cursor:pointer;
+  transition:background .15s,border-color .15s}
+.quiz-btn:hover{background:rgba(227,28,121,0.1);border-color:rgba(227,28,121,0.35);color:#fff}
+
+/* ── SCORECARD ── */
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.1rem}
+.sc-sum{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px 14px}
+.sc-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,0.35);margin-bottom:4px}
+.sc-val{font-size:26px;font-weight:600;color:#fff}
+.sc-sub{font-size:11px;color:rgba(255,255,255,0.38)}
+.pbar{height:3px;border-radius:2px;background:rgba(255,255,255,0.09);margin-top:8px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:2px;background:#E31C79;transition:width .4s}
+.sc-table{width:100%;border-collapse:collapse;font-size:12px}
+.sc-table th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,0.3);
+  padding:6px 8px;text-align:left;border-bottom:0.5px solid rgba(255,255,255,0.07)}
+.sc-table td{padding:7px 8px;border-bottom:0.5px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);vertical-align:middle}
+.sc-table tr:last-child td{border-bottom:none}
+.sk-name{color:#fff!important;font-weight:500}
+.stars{display:flex;gap:2px}
+.star{width:13px;height:13px;border-radius:2px;background:rgba(255,255,255,0.1);cursor:pointer;transition:background .1s;flex-shrink:0}
+.star.on{background:#E31C79}
+.b-chip{font-size:10px;padding:2px 8px;border-radius:8px}
+.b-none{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.3)}
+.b-dev{background:rgba(227,28,121,0.1);color:#f472b6}
+.b-comp{background:rgba(52,211,153,0.1);color:#34d399}
+.b-exp{background:rgba(227,28,121,0.18);color:#E31C79}
+
+/* ── QUIZ ── */
+.qm-list{display:flex;flex-direction:column;gap:7px}
+.qm-item{display:flex;align-items:center;gap:11px;padding:12px 13px;
+  border:0.5px solid rgba(255,255,255,0.08);border-radius:11px;cursor:pointer;
+  background:rgba(255,255,255,0.03);transition:border-color .15s}
+.qm-item:hover{border-color:rgba(227,28,121,0.35)}
+.qm-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.qm-info{flex:1}
+.qm-title{font-size:13px;font-weight:500;color:#fff}
+.qm-sub{font-size:11px;color:rgba(255,255,255,0.38);margin-top:2px}
+.qm-cnt{font-size:11px;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.38)}
+.q-back{font-size:12px;color:#E31C79;background:none;border:none;cursor:pointer;padding:0;margin-bottom:12px;display:block}
+.q-text{font-size:13px;font-weight:500;color:#fff;margin-bottom:10px;line-height:1.5}
+.q-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.q-opt{font-size:12px;padding:9px 12px;border:0.5px solid rgba(255,255,255,0.09);
+  border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.62);
+  text-align:left;background:rgba(255,255,255,0.03);width:100%;transition:all .1s}
+.q-opt:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);color:#fff}
+.q-opt.ok{border-color:#34d399;background:rgba(52,211,153,0.1);color:#34d399}
+.q-opt.no{border-color:#E31C79;background:rgba(227,28,121,0.1);color:#f472b6}
+.q-exp{font-size:11px;color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.04);
+  border-radius:6px;padding:8px 10px;line-height:1.5;display:none}
+.q-exp.show{display:block}
+.q-nav{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.q-btn{font-size:12px;padding:6px 14px;border-radius:7px;border:0.5px solid rgba(255,255,255,0.11);
+  background:rgba(255,255,255,0.04);color:#fff;cursor:pointer}
+.q-btn:hover{background:rgba(255,255,255,0.08)}
+.q-btn:disabled{opacity:.25;cursor:default}
+.q-prog{font-size:11px;color:rgba(255,255,255,0.3)}
+.q-score-box{background:rgba(255,255,255,0.04);border-radius:12px;padding:24px;text-align:center}
+.q-score-num{font-size:38px;font-weight:700;color:#fff}
+.q-score-sub{font-size:13px;color:rgba(255,255,255,0.45);margin-top:4px}
+.q-retry{margin-top:14px;font-size:12px;padding:7px 18px;border-radius:8px;
+  border:0.5px solid rgba(255,255,255,0.11);background:rgba(255,255,255,0.04);color:#fff;cursor:pointer}
+</style>
+
+<!-- HEADER -->
+<div class="mi-header">
+  <div class="mi-logo">
+    <span class="mi-wordmark">MOVABLE <span class="mi-ink-block">INK</span></span>
+  </div>
+  <div class="mi-sep"></div>
+  <div>
+    <div class="mi-prog-title">Technical Support — New Hire Training Program</div>
+    <div class="mi-prog-sub">8-week onboarding · Studio &amp; Da Vinci · Built from live Notion, Guru, Zendesk &amp; Slack</div>
+  </div>
+  <div class="mi-pill">Internal use only</div>
+</div>
+
+<!-- MAIN CARD -->
+<div class="card">
+
+<!-- TOP TABS -->
+<div class="tab-row">
+  <div class="tab active" onclick="switchMain('schedule',this)">Training schedule</div>
+  <div class="tab" onclick="switchMain('scorecard',this)">Progress scorecard</div>
+  <div class="tab" onclick="switchMain('quizzes',this)">Quizzes</div>
+</div>
+
+<!-- SCHEDULE -->
+<div class="view show" id="view-schedule">
+  <div class="week-tab-row" id="sch-week-tabs"></div>
+  <div id="sch-week-panels"></div>
+</div>
+
+<!-- SCORECARD -->
+<div class="view" id="view-scorecard">
+  <div class="sc-grid">
+    <div class="sc-sum">
+      <div class="sc-lbl">Overall readiness</div>
+      <div class="sc-val" id="ov-pct">0%</div>
+      <div class="sc-sub">across all skills</div>
+      <div class="pbar"><div class="pbar-fill" id="ov-bar" style="width:0%"></div></div>
+    </div>
+    <div class="sc-sum">
+      <div class="sc-lbl">Quiz avg score</div>
+      <div class="sc-val" id="qz-avg">—</div>
+      <div class="sc-sub">target: 80%+</div>
+      <div class="pbar"><div class="pbar-fill" id="qz-bar" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="week-tab-row" id="sc-week-tabs"></div>
+  <div id="sc-week-panels"></div>
+  <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.28)">Click stars to score 1–5 per skill. Target ≥3 by week 4, ≥4 by week 8.</div>
+</div>
+
+<!-- QUIZZES -->
+<div class="view" id="view-quizzes">
+  <div id="qz-list-view">
+    <div class="week-tab-row" id="qz-week-tabs"></div>
+    <div id="qz-week-panels"></div>
+  </div>
+  <div id="qz-play-view" style="display:none">
+    <button class="q-back" onclick="showQzList()">← Back to quizzes</button>
+    <div id="qz-content"></div>
+  </div>
+</div>
+
+</div><!-- .card -->
+
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+const weeks=[
+  {
+    id:'w12',lbl:'Weeks 1–2',
+    st:{
+      title:'Layer 1: Understand — Studio',layer:'l1',mode:'Learn',
+      obj:'Get oriented with Studio. Watch the WorkRamp library, understand the ecosystem, and learn Studio user access, roles, and invite workflows.',
+      res:[
+        {i:'▶',t:'Studio platform library — WorkRamp',u:'https://movableink.app.workramp.com/libraries/0198d2ff-96fe-7860-bb21-134401b9587c/content'},
+        {i:'📄',t:'User Management — Notion',u:'https://app.notion.com/p/20ef4102e3598045991cc94c545a4d98'},
+        {i:'📄',t:'SSO setup and debugging — Notion',u:'https://app.notion.com/p/caf0f48875124b398136291d4239fc18'},
+      ],
+      topics:[
+        'What is Studio? Purpose, use cases, and how it fits the client ESP stack',
+        'Studio user sections, roles, and permissions overview',
+        'Invite workflow — 1 email invite per user rule and what happens on acceptance',
+        'SSO for Studio: Auth0, SAML, company name format, IDP-initiated restriction',
+        'Debugging Studio login: login troubleshooter, Auth0 logs, Django tab',
+        'User access request workflow: managers → CXM → Okta logging',
+      ],
+      ms:'By end of week 2 (Studio): Understands Studio user roles, can process an invite, and debugs a basic login issue using the troubleshooter.',
+      msItems:['Can walk through Studio invite flow end-to-end','Handles a simulated Studio login ticket without help','Knows escalation path for Studio access issues'],
+      cases:[],qid:'login_studio'
+    },
+    dv:{
+      title:'Da Vinci Foundations',layer:'l1',mode:'Learn',
+      obj:'Get grounded in Da Vinci before touching tickets. Watch the WorkRamp overview, understand the Org→Account→User hierarchy, and review simple real examples of access and setup requests.',
+      res:[
+        {i:'▶',t:'Da Vinci platform overview — WorkRamp',u:'https://movableink.app.workramp.com/series_assignments/01a086ec-4e4a-789f-9a09-af6be5374c8e'},
+        {i:'📄',t:'User Management — Notion',u:'https://app.notion.com/p/20ef4102e3598045991cc94c545a4d98'},
+        {i:'📄',t:'SSO setup and debugging — Notion',u:'https://app.notion.com/p/caf0f48875124b398136291d4239fc18'},
+        {i:'🔗',t:'Getting started: Org, Account and user access — DV Help Center',u:'https://davinci.support.movableink.com/hc/en-us/articles/29004275319575'},
+        {i:'🔗',t:'Invite new users and assign roles — DV Help Center',u:'https://davinci.support.movableink.com/hc/en-us/articles/29004482362007'},
+      ],
+      topics:[
+        'What is Da Vinci? AI-powered decisioning vs Studio content personalization',
+        'Da Vinci: Organizations, Accounts, user roles hierarchy',
+        'SSO for Da Vinci: 7 required Auth0 apps, extra org-level Connection ID step',
+        'Debugging DV login: login troubleshooter, Auth0 history, Django tab',
+        'DV user access: #dv-ia-usermanagement Slack channel, Okta requirement',
+        'Third-party user management: vendor org vs client org separation',
+      ],
+      ms:'Foundation checkpoint: Can explain the DV org hierarchy, recognise a basic access request, and knows where to look before asking for help.',
+      msItems:['Quiz score ≥80% on Login & User Access','Can walk through DV SSO setup end-to-end','Handles a simulated DV user access ticket independently'],
+      cases:[
+        {type:'zd',badge:'ZD #355987',title:'Chewy — successful SSL cert installation (simple example)',body:'A clean, resolved cert installation ticket. Read this to understand what a standard cert install looks like from start to finish — the request, the back-and-forth, and what a successful close looks like.',zdUrl:'https://movableink.zendesk.com/agent/tickets/355987'},
+        {type:'zd',badge:'Okta #8930',title:'Successful Okta access request — new user granted DV access',body:'A routine Okta access request processed without issues. Learn: what a well-formed access request looks like, how quickly it should be actioned, and what the approval flow looks like end-to-end.',zdUrl:'https://movableink.at.okta.com/next/requests/8930'},
+        {type:'zd',badge:'Okta #8926',title:'Successful Okta request — company name / org setting change',body:'A simple org name or company setting change processed via Okta. Learn: how name change and org config requests come in, what information is needed, and what a clean resolution looks like.',zdUrl:'https://movableink.at.okta.com/next/requests/8926'},
+      ],qid:'login_dv'
+    }
+  },
+  {
+    id:'w34',lbl:'Weeks 3–4',
+    st:{
+      title:'Layer 1: Understand (deeper) — Studio',layer:'l1',mode:'Learn',
+      obj:'Deepen Studio knowledge — how content renders, what data sources do, and how Auth0 domain matching works. Start shadowing live Studio tickets.',
+      res:[
+        {i:'▶',t:'Studio platform library — WorkRamp (continue)',u:'https://movableink.app.workramp.com/libraries/0198d2ff-96fe-7860-bb21-134401b9587c/content'},
+        {i:'📄',t:'Adding Subdomains in Auth0 — Notion',u:'https://app.notion.com/p/7b736a9373964301a30a314de6d3e45d'},
+        {i:'🔗',t:'Studio: Manage new and existing users',u:'https://support.movableink.com/hc/en-us/articles/360019110714-Manage-new-and-existing-users'},
+        {i:'🔗',t:'Learning Hub client enablement',u:'https://learning.movableink.com'},
+      ],
+      topics:[
+        'How Auth0 domain matching works at login — why the SSO button appears',
+        'Adding subdomains in Auth0: Login Experience tab → Identity Provider domains field',
+        'Studio campaigns, creatives, data sources, rendering — core concepts',
+        'Dynamic vs static content — personalization generated at engagement time',
+        'Common Studio issues: creative not rendering, data missing, fallback triggered',
+        'Troubleshooting framework: T.R.A.C.E. (Understand → Reproduce → Analyze → Confirm → Explain)',
+        'Shadow 3–5 live Studio tickets with a mentor',
+      ],
+      ms:'By end of week 4 (Studio): Can add a subdomain to Auth0, investigate a rendering issue using T.R.A.C.E., and write a clear client-facing response.',
+      msItems:['Can add a subdomain to Auth0 without help','Scores ≥3/5 on Studio knowledge in scorecard','Handles 2 supervised Studio tickets'],
+      cases:[],qid:'studio'
+    },
+    dv:{
+      title:'Layer 1: Understand (deeper) — Da Vinci',layer:'l1',mode:'Learn',
+      obj:'Deepen Da Vinci knowledge — the three building blocks, campaign configuration, and how to investigate decisioning behavior. Start shadowing live DV tickets.',
+      res:[
+        {i:'▶',t:'Da Vinci platform overview — WorkRamp (revisit)',u:'https://movableink.app.workramp.com/series_assignments/01a086ec-4e4a-789f-9a09-af6be5374c8e'},
+        {i:'📄',t:'Adding Subdomains in Auth0 — Notion',u:'https://app.notion.com/p/7b736a9373964301a30a314de6d3e45d'},
+        {i:'📄',t:'Da Vinci Internal User Management — Notion',u:'https://app.notion.com/p/196f4102e35980e89915f170ccbd78b6'},
+        {i:'🔗',t:'Da Vinci: Getting started — Org, Account and user access',u:'https://davinci.support.movableink.com/hc/en-us/articles/29004275319575-Getting-started-managing-Organization-Account-and-user-access'},
+        {i:'🔗',t:'Da Vinci: Invite new users and assign roles',u:'https://davinci.support.movableink.com/hc/en-us/articles/29004482362007-Invite-new-users-to-your-Organization-and-assign-roles'},
+        {i:'🔗',t:'Da Vinci: Invite new users — role definitions deep dive',u:'https://davinci.support.movableink.com/hc/en-us/articles/29004482362007-Invite-new-users-to-your-Organization-and-assign-roles#h_01KW013Y2GM2DGXKVGZKYRQ7QN'},
+      ],
+      topics:[
+        'Da Vinci three building blocks: template tags, content blocks, templates',
+        'Static vs dynamic content blocks in DV campaigns',
+        'Campaign audience suppression, dynamic URLs, subject lines',
+        'Decisioning behavior: why a contact received experience X over Y',
+        'Common DV issues: campaign config errors, missing recs, data integration',
+        'T.R.A.C.E. applied to DV — what logs and config to check first',
+        'Shadow 3–5 live Da Vinci tickets with a mentor',
+      ],
+      ms:'By end of week 4 (Da Vinci): Understands DV campaign structure, can investigate a basic decisioning question, and knows where to look for config issues.',
+      msItems:['Scores ≥3/5 on Da Vinci knowledge in scorecard','Handles 2 supervised DV tickets','Explains template tag / content block relationship correctly'],
+      cases:[],qid:'dv_deep'
+    }
+  },
+  {
+    id:'w56',lbl:'Weeks 5–6',
+    st:{
+      title:'Layer 2: Troubleshoot — Studio',layer:'l2',mode:'Practice → Shadow',
+      obj:'Apply Studio knowledge to real past tickets. Investigate each case, understand what happened, and practice writing client-facing responses and escalation packages.',
+      res:[
+        {i:'🔗',t:'Studio: Manage new and existing users',u:'https://support.movableink.com/hc/en-us/articles/360019110714-Manage-new-and-existing-users'},
+        {i:'📄',t:'CX Da Vinci Masters Resources FAQ — Guru',u:'https://app.getguru.com/card/TBqeAx5c/CX-Da-Vinci-Masters-Resources-FAQ'},
+        {i:'🔗',t:'Learning Hub — continued education',u:'https://learning.movableink.com'},
+      ],
+      topics:[
+        'Analytics Explorer: pulling click and impression data for Studio campaigns',
+        'Preview vs production discrepancy — almost always a data issue',
+        'Ticket quality: symptoms vs root cause, asking the right questions',
+        'Writing a complete escalation package for Studio issues',
+        'Customer communication: technical clarity and setting expectations',
+        'Handle 3–5 live Studio tickets independently with mentor review',
+      ],
+      ms:'By end of week 6 (Studio): Independently investigates Studio rendering or data issues, writes clear client responses, and knows when to escalate vs resolve.',
+      msItems:['Handles 3 live Studio tickets with mentor review','Correctly writes a Studio escalation package','Scores ≥4/5 on Studio knowledge'],
+      cases:[
+        {type:'zd',badge:'ZD #352902',title:'Gap Inc — emergency password reset for all Studio/DV users',body:'Gap flagged a security compromise and asked MI to wipe all passwords. Learn: what MI can/cannot do for bulk resets, how to scope a security-related access request, and how to coordinate with InfoSec.',zdUrl:'https://movableink.zendesk.com/agent/tickets/352902'},
+        {type:'zd',badge:'ZD #353941',title:'Paysafe — user locked out after 2FA reset, authenticator code always invalid',body:'User switched phones (Android → iPhone) and could not log in after multiple 2FA resets. Both authenticators returned invalid code. Learn: how to investigate persistent 2FA failures and when to involve Engineering.',zdUrl:'https://movableink.zendesk.com/agent/tickets/353941'},
+        {type:'zd',badge:'ZD #338254',title:'Currys — DV access request for existing Studio user',body:"Client requested DV access for a user who already had Studio access. Classic pattern: client assumes Studio access = DV access. Learn: that the two platforms are entirely separate.",zdUrl:'https://movableink.zendesk.com/agent/tickets/338254'},
+      ],
+      qid:'studio_adv'
+    },
+    dv:{
+      title:'Layer 2: Troubleshoot — Da Vinci',layer:'l2',mode:'Practice → Shadow',
+      obj:'Apply Da Vinci knowledge to real past tickets and Slack threads. Work through SSO setups, cert renewals, new user invite failures, and decisioning investigations.',
+      res:[
+        {i:'📄',t:'Da Vinci Internal User Management — Notion',u:'https://app.notion.com/p/196f4102e35980e89915f170ccbd78b6'},
+        {i:'🔗',t:'Da Vinci: Getting started — Org, Account and user access',u:'https://davinci.support.movableink.com/hc/en-us/articles/29004275319575-Getting-started-managing-Organization-Account-and-user-access'},
+        {i:'🔗',t:'Da Vinci: Invite new users and assign roles',u:'https://davinci.support.movableink.com/hc/en-us/articles/29004482362007-Invite-new-users-to-your-Organization-and-assign-roles'},
+        {i:'🔗',t:'Da Vinci: Invite new users — role definitions deep dive',u:'https://davinci.support.movableink.com/hc/en-us/articles/29004482362007-Invite-new-users-to-your-Organization-and-assign-roles#h_01KW013Y2GM2DGXKVGZKYRQ7QN'},
+        {i:'📄',t:'CX Da Vinci Masters Resources FAQ — Guru',u:'https://app.getguru.com/card/TBqeAx5c/CX-Da-Vinci-Masters-Resources-FAQ'},
+      ],
+      topics:[
+        'Certificate renewals: CSR generation, signed cert submission, renewal flow',
+        'DV user management: Django check → #dv-ia-usermanagement → Okta → add',
+        "Email already taken error: adding existing users to additional accounts",
+        'DV invite emails not delivered: investigation path and re-escalation after Eng close',
+        'Handle 3–5 live Da Vinci tickets independently with mentor review',
+      ],
+      ms:'By end of week 6 (Da Vinci): Handles DV user access requests, debugs invite failures, investigates cert issues, and explains decisioning outcomes to clients.',
+      msItems:['Reviews all case study tickets and can explain each resolution','Handles 2 supervised DV tickets','Explains a cert renewal flow end-to-end'],
+      cases:[
+        {type:'zd',badge:'ZD #354602',title:'Rocket Companies — SSO setup with child accounts and XML file',body:'Client submitted an XML file instead of individual SAML fields. Parent org with 3 child accounts. Learn: how to extract SAML fields from the SSO Troubleshooter and handle non-standard submissions.',zdUrl:'https://movableink.zendesk.com/agent/tickets/354602',slackUrl:'https://ink.enterprise.slack.com/archives/C0B969VUR7A/p1787591434682279'},
+        {type:'sl',badge:'Slack — Rocket SSO live thread',title:'Nizam + Bryan Pyle: real-time SSO setup',body:'See how TS and CX collaborate to gather org structure, generate SAML fields, handle the XML edge case, and request the X509 cert in PEM/CER format.',slackUrl:'https://ink.enterprise.slack.com/archives/C0B969VUR7A/p1787591434682279'},
+        {type:'zd',badge:'ZD #355465',title:"Kohl's — recurring new user 404 on DV invite",body:'Users accepted invite, set password, then landed on a 404. Learn: how to investigate Auth0 and Django, identify org vs account level issues, and push for a long-term fix.',zdUrl:'https://movableink.zendesk.com/agent/tickets/355465',slackUrl:'https://ink.enterprise.slack.com/archives/C0AQCK7S5J6/p1788354398351219'},
+        {type:'zd',badge:'ZD #352051',title:"CB2 — 'email already taken' when inviting user to second account",body:"User had Crate access but not CB2 US or CA. Platform blocked invite with 'email already taken'. Learn: how to add existing users to additional accounts without re-inviting.",zdUrl:'https://movableink.zendesk.com/agent/tickets/352051'},
+        {type:'sl',badge:'Slack — DV invite emails not received',title:"Crate & Barrel: SC-219868 — DV invite emails not delivered",body:"Users weren't receiving invite emails despite successful sends. Eng marked 'Not a Bug' but issue persisted. Learn: email delivery investigation and re-escalation after an Eng close.",slackUrl:'https://ink.enterprise.slack.com/archives/C04RPJN7HUN/p1789497794323049'},
+        {type:'zd',badge:'ZD #355489',title:"Kohl's — emergency cert migration to Let's Encrypt",body:"Client migrating cert provider with hard Sept 18 deadline. Learn: emergency cert tickets, what MI can/cannot manage, and cert installation workflow.",zdUrl:'https://movableink.zendesk.com/agent/tickets/355489'},
+        {type:'zd',badge:'ZD #355010',title:'Gap Inc — SSL cert renewal, CSR to signed cert flow',body:'Eng generated 4096-bit CSR, Gap signed and returned. Learn: the full cert renewal back-and-forth and what Engineering vs TS owns.',zdUrl:'https://movableink.zendesk.com/agent/tickets/355010',slackUrl:'https://ink.enterprise.slack.com/archives/C0AQCK7S5J6/p1788390356451749'},
+        {type:'sl',badge:'Slack — Jetstar SSO login loop',title:'SSO debug: client sent the wrong SAML login URL',body:"Jetstar users stuck in a double-login/MFA loop. Client sent auth.movableink.com/login instead of their IDP URL. Learn: how to identify a wrong SAML URL and hold off on Eng escalation.",slackUrl:'https://ink.enterprise.slack.com/archives/C0AQCK7S5J6/p1788995090267219'},
+        {type:'sl',badge:'Slack — Okta access request pattern',title:'Processing routine Okta access requests',body:'Multiple Okta requests in the daily queue. Learn: what they look like, how quickly to action them, and distinguishing routine requests from those needing CXM approval.',slackUrl:'https://ink.enterprise.slack.com/archives/C0AQCK7S5J6/p1789081509110719'},
+        {type:'zd',badge:'ZD #357151',title:'PB Kids — Da Vinci campaign stuck on Syncing',body:'Campaign 2026-09-21_PK_AM1_FF_ST_BabySafetyMonth_3100k was stuck on Syncing despite the client trying to unlock and re-lock it. Learn: what a campaign sync failure looks like, what to check first (campaign state, audience lock status, run logs), and how to resolve or escalate.',zdUrl:'https://movableink.zendesk.com/agent/tickets/357151'},
+        {type:'zd',badge:'ZD #357137',title:'Ballard Designs — standard run failed: ValidationError incomplete content blocks',body:'Automated run alert: 2 campaigns failed with a ValidationError — contacts suppressed due to incomplete content blocks (contentblock_id 3196, position 4, ~841k contacts each). Learn: how to read a DV run failure alert, what a ValidationError means for content blocks, and how to investigate which block is incomplete and why.',zdUrl:'https://movableink.zendesk.com/agent/tickets/357137'},
+      ],
+      qid:'dv_cases'
+    }
+  },
+  {
+    id:'w78',lbl:'Weeks 7–8',
+    st:{
+      title:'Layer 3: Support — Studio',layer:'l3',mode:'Investigate → Own',
+      obj:'Own Studio tickets independently. Handle live queue, write full escalation packages, communicate clearly with clients, and contribute one internal doc or Guru card.',
+      res:[
+        {i:'📄',t:'Technical Support Master Database — Notion',u:'https://app.notion.com/p/5c88a3f0ad8f412a88cfae02e361700b'},
+        {i:'🔗',t:'Movable Ink Learning Hub — continued education',u:'https://learning.movableink.com'},
+      ],
+      topics:[
+        'Own Studio ticket queue — handle independently with mentor spot-checks',
+        'Write complete escalation packages (issue + impact + steps + evidence + root cause)',
+        'Customer communication: technical clarity, tone, and expectation setting',
+        'Documentation: contribute one Notion or Guru card on a Studio topic',
+        'Final Studio scenario: preview vs production discrepancy end-to-end',
+      ],
+      ms:'By end of week 8 (Studio): Handles normal Studio tickets solo, writes complete escalation packages, and has contributed one internal Studio doc.',
+      msItems:['Handles Studio ticket queue independently','Quiz avg ≥80% on Studio modules','Submitted one Studio Notion or Guru card'],
+      cases:[],qid:'final'
+    },
+    dv:{
+      title:'Layer 3: Support — Da Vinci',layer:'l3',mode:'Investigate → Own',
+      obj:'Own Da Vinci tickets independently. Handle live queue, write complete escalation packages, and contribute one internal Da Vinci doc or Guru card.',
+      res:[
+        {i:'📄',t:'Technical Support Master Database — Notion',u:'https://app.notion.com/p/5c88a3f0ad8f412a88cfae02e361700b'},
+        {i:'📄',t:'CX Da Vinci Masters Resources FAQ — Guru',u:'https://app.getguru.com/card/TBqeAx5c/CX-Da-Vinci-Masters-Resources-FAQ'},
+        {i:'🔗',t:'Movable Ink Learning Hub — continued education',u:'https://learning.movableink.com'},
+      ],
+      topics:[
+        'Own DV ticket queue — handle independently with mentor spot-checks',
+        'Write complete DV escalation packages (issue + impact + steps + evidence + root cause)',
+        'Customer communication for DV: explaining decisioning outcomes clearly',
+        'Documentation: contribute one Notion or Guru card on a DV topic',
+        'Final DV scenario: full end-to-end SSO + user access + campaign issue',
+        'Scorecard review with manager: identify gaps for Q2 development',
+      ],
+      ms:'By end of week 8 (Da Vinci): Handles normal DV tickets solo, explains decisioning outcomes to clients, and has contributed one internal DV doc.',
+      msItems:['Overall scorecard ≥70% readiness','Quiz avg ≥80% across all modules','Submitted one DV Notion or Guru card','Passes final end-to-end scenario assessment'],
+      cases:[],qid:'final'
+    }
+  }
+];
+
+const skillsSt=['Studio product knowledge','Studio troubleshooting','Studio ticket handling','Studio communication'];
+const skillsDv=['Da Vinci product knowledge','Da Vinci troubleshooting','DV user management','Escalation quality'];
+const skillsShared=['Independence','Documentation'];
+
+const quizData={
+  login_studio:{title:'Studio: Login & Access Troubleshooting Quiz',qs:[
+    {q:'A user cannot log into Studio. What is the FIRST tool to check?',opts:['Auth0 User Management','Django admin users tab','Studio login troubleshooter at app.movableink.com/admin/login_troubleshooter','#dv-ia-usermanagement Slack channel'],ans:2,exp:'The Studio login troubleshooter shows whether the user exists, has accepted their invite, and is authenticated in Auth0 — always start here.'},
+    {q:"A client's Okta tile launches Studio but users see an IDP-initiated error. Root cause?",opts:['Expired X509 certificate','User not added to Studio','Movable Ink does not support IDP-initiated login flows','Auth0 connection missing Studio application'],ans:2,exp:'MI intentionally does not support IDP-initiated logins. Users must start at app.movableink.com. Okta Bookmark Apps can simulate SP-initiated login as a workaround.'},
+    {q:'What is the one-email-per-user rule in Studio?',opts:['Each user can only receive one invite email ever','Each email address can only belong to one Studio account across all clients','Users can only be invited once per week','Studio only allows one active email domain per client'],ans:1,exp:'An email address can only belong to one Studio account. Multiple client account access requires adding them at the account level within the same org.'},
+    {q:'Which escalation path is correct for a confirmed Studio platform bug?',opts:['Route to Solutions (Jarrod Mantell)','Route to Tech Support / Engineering','Route to CXM directly','Route to Okta support'],ans:1,exp:'Confirmed bugs go to Tech Support → Engineering escalation. Solutions handles use case questions, new builds, and overlay deal support.'},
+  ]},
+  login_dv:{title:'Da Vinci: SSO & Access Troubleshooting Quiz',qs:[
+    {q:'What tool do you open FIRST when setting up a new SSO connection for a Da Vinci client?',opts:['Auth0 dashboard','SSO Troubleshooter at app.movableink.com/admin/sso_troubleshooter','Da Vinci organizations page','Zendesk ticket form'],ans:1,exp:'The SSO Troubleshooter generates the SAML fields (Entity ID, ACS URL, Login URL) the client needs before anything is created in Auth0.'},
+    {q:"A client's company is 'Stanley Morgan & Co.' Correct format for the SSO Troubleshooter?",opts:['Stanley Morgan & Co.','Stanley-Morgan-Co','stanleymorgan','StanleyMorganCo'],ans:2,exp:"Lowercase, no spaces, no special characters — must exactly match the Auth0 Connection Name. 'Stanley Morgan & Co.' → 'stanleymorgan'."},
+    {q:"A client set up SSO for Da Vinci but users logging in via Studio still hit the standard login page. What is the most likely cause?",opts:["The SSO Troubleshooter was not run so SAML fields were never generated for Studio","Da Vinci and Studio use separate Auth0 connections — SSO must be configured independently for each platform","The X509 certificate expired during setup","The Auth0 Login Experience tab was not configured"],ans:1,exp:"Da Vinci and Studio run on separate Auth0 connections. Setting up SSO for one does not carry over to the other. Each platform requires its own SAML setup in Auth0 with the correct set of applications enabled."},
+    {q:'A Merkle (vendor) user needs access to a Gap account in Da Vinci. Where do you add them?',opts:['Directly to the Gap organization','Merkle organization first, then add to the Gap account separately','Both Gap and Merkle simultaneously','Skip the org — add directly at account level'],ans:1,exp:'Vendors go into their own org (Merkle), never the client org (Gap). Then add them to the specific account(s) they need.'},
+    {q:'A client emails you saying SSO worked yesterday but today users get redirected to the standard login page. What do you check first?',opts:["Re-create the entire SSO connection in Auth0 from scratch","Check the Auth0 connection is still enabled and the X509 certificate has not expired — a cert rotation on the client IdP is a common cause of sudden SSO failures","Ask the client to clear their browser cache and try again","Check if the Okta tile was removed by the client's IT team"],ans:1,exp:"A sudden SSO failure that worked previously is almost always a certificate issue — the client's IdP cert was rotated without updating Auth0. Check Auth0 logs for the specific error, then verify the cert thumbprint. If there is a mismatch, request a fresh PEM or CER cert from the client."},
+    {q:"A Da Vinci campaign is stuck on 'Syncing' and the client has already tried unlocking and re-locking it. What is your next step?",opts:["Tell the client to wait 24 hours and it will resolve","Check the campaign's run logs for errors, confirm the audience lock state in the platform, and check if a manual sync trigger is needed — then escalate to Engineering with the campaign ID if the state does not clear","Ask the client to delete the campaign and recreate it","Reassign the ticket to the CXM"],ans:1,exp:"A stuck Syncing state after unlock/re-lock usually means the sync job failed silently. Check the campaign run logs for a related error, confirm the audience tab status, and note the campaign ID and platform ID before escalating to Engineering — they need this to investigate the job state."},
+    {q:"An automated alert fires: a Da Vinci standard run failed with 'ValidationError: contacts suppressed for incomplete content blocks'. What does this mean and what do you do?",opts:["The campaign audience is empty — ask the client to re-upload their contact list","One or more content blocks in the campaign have missing or incomplete creative content, causing those contacts to be suppressed. Identify the campaign ID, content block ID, and position from the error, then work with the client or CXM to fill the incomplete block","The run ID is invalid — re-trigger the run","The client's ESP rejected the send — contact the ESP"],ans:1,exp:"A ValidationError for incomplete content blocks means the campaign tried to run but at least one content block had no eligible creative for a large portion of contacts. The error output shows the campaign ID, position, and content block ID. Use these to locate the block in Da Vinci and identify what creative content is missing or misconfigured."},
+  ]},
+  studio:{title:'Wk 3–4 · Studio: Auth0 Subdomains & Rendering',qs:[
+    {q:'How does the MI platform decide whether to show the SSO button at login?',opts:["Checks browser cookies","Compares user's email domain against Auth0's registered Identity Provider domains list","Checks the Zendesk ticket for SSO confirmation","Looks up user's account in Django"],ans:1,exp:"When a user types their email, the platform compares the domain against Auth0's Identity Provider domains list. A match triggers the SSO button automatically."},
+    {q:'Where in Auth0 do you add additional email domains to an existing SSO connection?',opts:['Authentication → Social → Edit','Authentication → Enterprise → SAML → connection → Login Experience → Identity Provider domains','User Management → Users → Edit user','Dashboard → Applications → APIs'],ans:1,exp:'Auth0 → Authentication → Enterprise → SAML → find the client connection → Login Experience tab → add domains comma-separated → Save.'},
+    {q:'A Studio creative shows fallback instead of personalized content. What do you check first?',opts:['Resend the campaign invite','Whether the data source is populated and accessible for that specific user','Delete and re-create the creative','Contact the ESP directly'],ans:1,exp:'Fallback triggers when Studio cannot find the data. First check: is the data source connected and populated? Does the specific user have the expected data attributes?'},
+    {q:'What does T.R.A.C.E. stand for?',opts:['Track, Report, Analyze, Confirm, Escalate','Understand, Reproduce, Analyze, Confirm root cause, Explain/Escalate','Test, Resolve, Archive, Check, Evaluate','Triage, Research, Assign, Close, Escalate'],ans:1,exp:'T.R.A.C.E.: Understand → Reproduce → Analyze (config, data, logs) → Confirm root cause → Explain to customer or Escalate with complete details.'},
+  ]},
+  dv_deep:{title:'Wk 3–4 · Da Vinci: Fundamentals',qs:[
+    {q:'What are the three core building blocks of a Da Vinci campaign?',opts:['Campaigns, Audiences, Reports','Template tags, content blocks, templates','Organizations, Accounts, Users','Creatives, ESPs, Data feeds'],ans:1,exp:'Template tags = creative data fields. Content blocks = visual email sections. Templates = overall layouts. These combine to form a Da Vinci send.'},
+    {q:'A contact received Creative X instead of Creative Y. What do you investigate first?',opts:['The SSO troubleshooter','Campaign config: content block eligibility rules, audience suppression, template tag matching for that contact','The Studio login troubleshooter','Da Vinci Mobile settings'],ans:1,exp:"Decisioning in Da Vinci is driven by content block eligibility rules, template tag matching, and suppression rules. Check these against the contact's data."},
+    {q:'Before adding a new user to Da Vinci, what should you always check first?',opts:['Whether their email domain is whitelisted','The Django users tab — to confirm they are not already in the system','The Auth0 Login Experience tab','The Studio login troubleshooter'],ans:1,exp:'Always check Django first before adding. The workflow: Django check → #dv-ia-usermanagement → Okta → add in UI if approved.'},
+    {q:"A client's SSO stops working with a 'thumbprint mismatch' error. Most likely cause and fix?",opts:['Connection name changed — update in Auth0','X509 cert in Auth0 does not match the client IdP — request a fresh PEM/CER cert and update Auth0','ACS URL changed — regenerate in SSO Troubleshooter','SCIM provisioning enabled — disable it'],ans:1,exp:'Thumbprint mismatch = certificate fingerprint mismatch. The cert likely expired or was rotated on the client IdP. Request a new PEM/CER cert and replace it in Auth0.'},
+  ]},
+  studio_adv:{title:'Wk 5–6 · Studio: Troubleshooting',qs:[
+    {q:'A Studio creative works in preview but shows fallback in production sends. Most likely cause?',opts:["ESP isn't connected","Preview uses sample data; production uses the live feed — live data is likely missing or formatted differently for this contact","Creative needs to be deleted and remade","SSO is blocking the render"],ans:1,exp:'Preview vs production discrepancy almost always points to a data issue. Preview uses seed data; production uses the live feed. Check the data source for that specific contact.'},
+    {q:'A client reports their Studio creative is not rendering. What is the first scoping question?',opts:['Ask them to clear cache','Scope: is it all users or one? All email clients or one? Is it reproducible?','Delete and re-create the creative','Escalate immediately to Engineering'],ans:1,exp:'Scope before investigating: widespread or isolated? One email client or all? Reproducible? Scoping guides where you look and prevents wasted investigation.'},
+    {q:'Gap Inc asked MI to wipe all user passwords after a security compromise. Correct response?',opts:['Do it immediately','Clarify what MI can/cannot do for bulk resets, triage urgency, and coordinate with InfoSec before taking any action','Refuse and close the ticket','Ask the client to reset passwords themselves'],ans:1,exp:'Security requests need InfoSec involvement before action. Clarify scope, confirm what MI can do (individual Auth0 resets) vs cannot (bulk wipe), then loop in InfoSec.'},
+  ]},
+  dv_cases:{title:'Wk 5–6 · Da Vinci: Real Cases',qs:[
+    {q:'The Rocket Companies ticket (ZD #354602) came in with an XML file instead of SAML fields. Correct next step?',opts:['Reject the ticket','Generate fields (Entity ID, ACS URL, Login URL) from the SSO Troubleshooter, send to client, and separately request their X509 cert in PEM/CER format','Use the XML file directly in Auth0','Escalate immediately to Engineering'],ans:1,exp:'The XML from the client is not what Auth0 needs. Generate correct SAML fields from the SSO Troubleshooter and send those. Separately request the X509 Signing Certificate in PEM or CER format.'},
+    {q:"On the Kohl's ticket (ZD #355465), users accepted the invite and got a 404. Investigation path?",opts:['Tell client to clear cache','Check Auth0 login history, check Django users tab, confirm org vs account level state, then investigate invite flow','Resend invite email immediately','Escalate to Engineering as a bug'],ans:1,exp:"Start with Auth0 history logs to see what happened post-invite, then check Django for user state. Check org vs account level. Resending without investigation is why this became recurring for Kohl's."},
+    {q:"On CB2 (ZD #352051), the platform showed 'email already taken' when inviting a user to a second account. Cause?",opts:['A bug in the invite system',"User's email already exists in DV (in another account) — add them to the additional account directly, do not re-invite","SSO connection is broken","User needs a new email address"],ans:1,exp:"'Email already taken' means the user already exists in Da Vinci. Don't re-invite — add them to the additional account directly from within that account's user management page."},
+    {q:'On the Gap cert renewal (ZD #355010), what did Engineering do vs TS?',opts:['TS did everything','Engineering generated the 4096-bit CSR; TS coordinated the handoff, processed the signed cert from Gap, and confirmed renewal across all domains','TS generated the CSR and Eng processed the cert','Client managed the entire renewal'],ans:1,exp:'Cert renewal split: Engineering generates the CSR, TS coordinates the client handoff and processes the signed cert when returned, then confirms renewal is live across all client domains.'},
+  ]},
+  final:{title:'Wk 7–8 · Final Assessment',qs:[
+    {q:'A client emails support@ about a new DV user who accepted the invite, set a password, but hit a 404. No account managers. What do you do?',opts:['Add the user yourself since there are no managers','Log in Okta/Zendesk, CC the CXM and company email alias, confirm with CXM in Slack, then investigate Auth0 and Django before taking action','Tell client to contact their IT department','Escalate to Engineering immediately'],ans:1,exp:"No managers doesn't mean you act unilaterally. Log in Okta/Zendesk, CC CXM and company alias, confirm before acting. Investigate Auth0 history and Django to diagnose the 404 root cause — don't just resend the invite."},
+    {q:'What must a complete escalation package include?',opts:['Just the ZD ticket link','Issue, customer impact, expected vs actual behavior, steps to reproduce, investigation performed, evidence, suspected root cause, and urgency','A screenshot and the customer email','Only the ZD ticket number'],ans:1,exp:'A complete escalation package has all 8 elements. Missing any slows Engineering down significantly.'},
+    {q:'How do you add a subdomain so @subsidiary.company.com users can log in via SSO?',opts:['Create a new SSO connection for the subdomain','Auth0 → existing SAML connection → Login Experience tab → add subdomain comma-separated in Identity Provider domains → Save','Delete existing connection and rebuild with both domains','Ask client to use @company.com addresses instead'],ans:1,exp:'No new connection needed. Auth0 → Authentication → Enterprise → SAML → find the client connection → Login Experience → add the subdomain comma-separated → Save.'},
+    {q:'In one sentence, what is the key operational difference between Studio and Da Vinci for support?',opts:['Studio is email only; Da Vinci is web and mobile','Studio issues are about content rendering, data, and config — Da Vinci issues are about campaign decisioning, audience logic, and why a contact received a specific experience','There is no functional difference from a support perspective','Studio is older; Da Vinci is the newer replacement'],ans:1,exp:'Studio = content and rendering (what does the image look like, why is it not showing). Da Vinci = decisioning (why did this contact get this creative, what data or rules drove that). This split tells you where to start on any ticket.'},
+  ]}
+};
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+const scores={};
+const qzScores={};
+let curQuiz=null,curQ=0,curAns=[];
+const activeWeek={schedule:'w12',scorecard:'w12',quizzes:'w12'};
+
+// ─────────────────────────────────────────────
+// MAIN TAB
+// ─────────────────────────────────────────────
+function switchMain(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  document.getElementById('view-'+id).classList.add('show');
+}
+
+// ─────────────────────────────────────────────
+// WEEK TABS
+// ─────────────────────────────────────────────
+function buildWeekTabs(tabsId,panelsId,ctx,builderFn){
+  const tabsEl=document.getElementById(tabsId);
+  const panelsEl=document.getElementById(panelsId);
+  tabsEl.innerHTML='';panelsEl.innerHTML='';
+  weeks.forEach(w=>{
+    const t=document.createElement('div');
+    t.className='week-tab'+(activeWeek[ctx]===w.id?' active':'');
+    t.textContent=w.lbl;
+    t.onclick=()=>{
+      activeWeek[ctx]=w.id;
+      tabsEl.querySelectorAll('.week-tab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      panelsEl.querySelectorAll('.week-panel').forEach(x=>x.classList.remove('show'));
+      document.getElementById(ctx+'-p-'+w.id).classList.add('show');
+    };
+    tabsEl.appendChild(t);
+    const p=document.createElement('div');
+    p.className='week-panel'+(activeWeek[ctx]===w.id?' show':'');
+    p.id=ctx+'-p-'+w.id;
+    p.innerHTML=builderFn(w,ctx);
+    panelsEl.appendChild(p);
+  });
+}
+
+// ─────────────────────────────────────────────
+// PLATFORM TAB SWITCHER
+// ─────────────────────────────────────────────
+function switchPlat(wid,ctx,plat,el){
+  const panel=document.getElementById(ctx+'-p-'+wid);
+  panel.querySelectorAll('.plat-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  panel.querySelectorAll('.plat-panel').forEach(p=>p.classList.remove('show'));
+  panel.querySelector('.plat-panel.'+plat).classList.add('show');
+}
+
+// ─────────────────────────────────────────────
+// SCHEDULE BUILDER
+// ─────────────────────────────────────────────
+function buildSchedule(w){
+  return `
+    <div class="plat-tab-row">
+      <div class="plat-tab st active" onclick="switchPlat('${w.id}','schedule','st',this)">
+        <div class="plat-dot" style="background:#34d399"></div>Studio
+      </div>
+      <div class="plat-tab dv" onclick="switchPlat('${w.id}','schedule','dv',this)">
+        <div class="plat-dot" style="background:#a78bfa"></div>Da Vinci
+      </div>
+    </div>
+    <div class="plat-panel st show">${buildModBox(w.st)}</div>
+    <div class="plat-panel dv">${buildModBox(w.dv)}</div>
+  `;
+}
+
+function buildModBox(m){
+  const resHTML=m.res.map(r=>`<div class="res-row"><div class="res-i">${r.i}</div><div class="res-t">${r.t}</div><a class="res-a" href="${r.u}" target="_blank">Open ↗</a></div>`).join('');
+  const topicsHTML=m.topics.map(t=>`<div class="topic-row"><div class="t-dot"></div><span>${t}</span></div>`).join('');
+  const msItems=m.msItems.map(i=>`<div class="ms-item"><span class="ms-check">✓</span><span>${i}</span></div>`).join('');
+  let casesHTML='';
+  if(m.cases&&m.cases.length){
+    casesHTML=`<div class="sec-lbl">Past tickets &amp; Slack threads</div>`;
+    casesHTML+=m.cases.map(c=>{
+      const bc=c.type==='sl'?'sl':'zd';
+      let lk='';
+      if(c.zdUrl) lk+=`<a class="case-link" href="${c.zdUrl}" target="_blank">Open ZD ticket ↗</a>`;
+      if(c.slackUrl) lk+=`<a class="case-link" href="${c.slackUrl}" target="_blank">Open Slack thread ↗</a>`;
+      return `<div class="case-card"><div class="case-top"><span class="c-badge ${bc}">${c.badge}</span><span class="case-title">${c.title}</span></div><div class="case-body">${c.body}</div><div class="case-links">${lk}</div></div>`;
+    }).join('');
+  }
+  return `<div class="mod-box">
+    <div class="mod-title">${m.title}</div>
+    <span class="layer-badge ${m.layer}">${m.mode}</span>
+    <div class="mod-obj">${m.obj}</div>
+    <div class="sec-lbl">Required resources</div>
+    <div class="res-block">${resHTML}</div>
+    <div class="sec-lbl">Topics covered</div>
+    <div class="topic-list">${topicsHTML}</div>
+    ${casesHTML}
+    <div class="ms-box">
+      <div class="ms-title">✦ Bi-weekly milestone</div>
+      <div class="ms-text">${m.ms}</div>
+      ${msItems}
+    </div>
+    <button class="quiz-btn" onclick="launchQuiz('${m.qid}')">📝 Take the quiz for this module</button>
+  </div>`;
+}
+
+// ─────────────────────────────────────────────
+// SCORECARD BUILDER
+// ─────────────────────────────────────────────
+function buildScorecard(w){
+  const wkNum=w.id==='w12'?2:w.id==='w34'?4:w.id==='w56'?6:8;
+  return `
+    <div class="plat-tab-row">
+      <div class="plat-tab st active" onclick="switchPlat('${w.id}','scorecard','st',this)">
+        <div class="plat-dot" style="background:#34d399"></div>Studio
+      </div>
+      <div class="plat-tab dv" onclick="switchPlat('${w.id}','scorecard','dv',this)">
+        <div class="plat-dot" style="background:#a78bfa"></div>Da Vinci
+      </div>
+    </div>
+    <div class="plat-panel st show">${buildScTable(w.id,'st',wkNum,[...skillsSt,...skillsShared])}</div>
+    <div class="plat-panel dv">${buildScTable(w.id,'dv',wkNum,[...skillsDv,...skillsShared])}</div>
+  `;
+}
+
+function buildScTable(wid,plat,wkNum,skills){
+  const rows=skills.map((sk,si)=>{
+    const key=`${plat}-${wid}-${si}`;
+    const val=scores[key]||0;
+    let stars='';
+    for(let s=1;s<=5;s++) stars+=`<div class="star${s<=val?' on':''}" onclick="setSc('${plat}','${wid}',${si},${s},this.parentElement)"></div>`;
+    let bench,cls;
+    if(val===0){bench='Not scored';cls='b-none';}
+    else if(val<3){bench='Developing';cls='b-dev';}
+    else if(val<4){bench='Competent';cls='b-comp';}
+    else{bench='Strong/Expert';cls='b-exp';}
+    return `<tr><td class="sk-name">${sk}</td><td><div class="stars">${stars}</div></td><td><span class="b-chip ${cls}">${bench}</span></td></tr>`;
+  }).join('');
+  return `<table class="sc-table"><thead><tr><th>Skill</th><th>Score 1–5 (Week ${wkNum} checkpoint)</th><th>Benchmark</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function setSc(plat,wid,si,val,starsEl){
+  scores[`${plat}-${wid}-${si}`]=val;
+  starsEl.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('on',i<val));
+  const row=starsEl.closest('tr');
+  let bench,cls;
+  if(val===0){bench='Not scored';cls='b-none';}
+  else if(val<3){bench='Developing';cls='b-dev';}
+  else if(val<4){bench='Competent';cls='b-comp';}
+  else{bench='Strong/Expert';cls='b-exp';}
+  const chip=row.querySelector('.b-chip');
+  chip.className='b-chip '+cls;chip.textContent=bench;
+  updateOverall();
+}
+
+function updateOverall(){
+  const total=Object.keys(scores).length*5||1;
+  const got=Object.values(scores).reduce((a,b)=>a+b,0);
+  const maxP=weeks.length*([...skillsSt,...skillsShared].length+[...skillsDv,...skillsShared].length)*5;
+  const pct=maxP?Math.round(got/maxP*100):0;
+  document.getElementById('ov-pct').textContent=pct+'%';
+  document.getElementById('ov-bar').style.width=pct+'%';
+  const qs=Object.values(qzScores);
+  if(qs.length){
+    const avg=Math.round(qs.reduce((a,b)=>a+b,0)/qs.length);
+    document.getElementById('qz-avg').textContent=avg+'%';
+    document.getElementById('qz-bar').style.width=avg+'%';
+  }
+}
+
+// ─────────────────────────────────────────────
+// QUIZ LIST BUILDER
+// ─────────────────────────────────────────────
+function buildQuizList(w){
+  function qItem(qid,icon,bg,tc,sub){
+    const q=quizData[qid];
+    const sc=qzScores[qid];
+    const badge=sc!=null
+      ?`<span class="qm-cnt" style="background:rgba(52,211,153,0.12);color:#34d399">${sc}%</span>`
+      :`<span class="qm-cnt">${q?q.qs.length:0} Qs</span>`;
+    return `<div class="qm-item" onclick="launchQuiz('${qid}')">
+      <div class="qm-icon" style="background:${bg};color:${tc}">${icon}</div>
+      <div class="qm-info">
+        <div class="qm-title">${q?q.title:'Quiz'}</div>
+        <div class="qm-sub">${sub}</div>
+      </div>${badge}</div>`;
+  }
+  return `
+    <div class="plat-tab-row">
+      <div class="plat-tab st active" onclick="switchPlat('${w.id}','quizzes','st',this)">
+        <div class="plat-dot" style="background:#34d399"></div>Studio
+      </div>
+      <div class="plat-tab dv" onclick="switchPlat('${w.id}','quizzes','dv',this)">
+        <div class="plat-dot" style="background:#a78bfa"></div>Da Vinci
+      </div>
+    </div>
+    <div class="plat-panel st show">
+      <div class="qm-list">${qItem(w.st.qid,'🎨','rgba(52,211,153,0.12)','#34d399',w.lbl+' · Studio')}</div>
+    </div>
+    <div class="plat-panel dv">
+      <div class="qm-list">${qItem(w.dv.qid,'⚙️','rgba(167,139,250,0.15)','#a78bfa',w.lbl+' · Da Vinci')}</div>
+    </div>
+  `;
+}
+
+// ─────────────────────────────────────────────
+// QUIZ ENGINE
+// ─────────────────────────────────────────────
+function launchQuiz(id){
+  if(!quizData[id]){return;}
+  curQuiz=id;curQ=0;
+  curAns=new Array(quizData[id].qs.length).fill(null);
+  document.getElementById('qz-list-view').style.display='none';
+  document.getElementById('qz-play-view').style.display='block';
+  switchMain('quizzes',document.querySelectorAll('.tab')[2]);
+  renderQ();
+}
+
+function renderQ(){
+  const qd=quizData[curQuiz];
+  const el=document.getElementById('qz-content');
+  if(curQ>=qd.qs.length){
+    const correct=curAns.filter((a,i)=>a===qd.qs[i].ans).length;
+    const pct=Math.round(correct/qd.qs.length*100);
+    qzScores[curQuiz]=pct;
+    updateOverall();
+    buildWeekTabs('qz-week-tabs','qz-week-panels','quizzes',buildQuizList);
+    el.innerHTML=`<div class="q-score-box"><div class="q-score-num">${pct}%</div><div class="q-score-sub">${correct} of ${qd.qs.length} correct — ${pct>=80?'great work ✓':'keep reviewing the materials'}</div><button class="q-retry" onclick="launchQuiz('${curQuiz}')">Retry</button></div>`;
+    return;
+  }
+  const item=qd.qs[curQ];
+  const answered=curAns[curQ]!==null;
+  const opts=item.opts.map((o,i)=>{
+    let cls='q-opt';
+    if(answered){if(i===item.ans)cls+=' ok';else if(i===curAns[curQ])cls+=' no';}
+    return `<button class="${cls}" onclick="ansQ(${i})">${o}</button>`;
+  }).join('');
+  el.innerHTML=`
+    <div class="q-text">Q${curQ+1}. ${item.q}</div>
+    <div class="q-opts">${opts}</div>
+    <div class="q-exp${answered?' show':''}">${item.exp}</div>
+    <div class="q-nav">
+      <button class="q-btn" onclick="navQ(-1)" ${curQ===0?'disabled':''}>← Prev</button>
+      <span class="q-prog">${curQ+1} / ${qd.qs.length}</span>
+      <button class="q-btn" onclick="navQ(1)">${curQ===qd.qs.length-1?'Finish':'Next →'}</button>
+    </div>`;
+}
+
+function ansQ(i){if(curAns[curQ]!==null)return;curAns[curQ]=i;renderQ();}
+function navQ(d){curQ=Math.max(0,curQ+d);renderQ();}
+function showQzList(){
+  document.getElementById('qz-list-view').style.display='block';
+  document.getElementById('qz-play-view').style.display='none';
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+buildWeekTabs('sch-week-tabs','sch-week-panels','schedule',buildSchedule);
+buildWeekTabs('sc-week-tabs','sc-week-panels','scorecard',buildScorecard);
+buildWeekTabs('qz-week-tabs','qz-week-panels','quizzes',buildQuizList);
+</script>
+</html>
