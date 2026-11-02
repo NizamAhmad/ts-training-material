@@ -267,7 +267,48 @@ body{
 // ─────────────────────────────────────────────
 const weeks=[
   {
-    id:'w12',lbl:'Weeks 1–2',
+    id:'w78',lbl:'Weeks 1–2',
+    st:{
+      title:'Layer 3: Support — Studio',layer:'l3',mode:'Investigate → Own',
+      obj:'Own Studio tickets independently. Handle live queue, write full escalation packages, communicate clearly with clients, and contribute one internal doc or Guru card.',
+      res:[
+        {i:'📄',t:'Technical Support Master Database — Notion',u:'https://app.notion.com/p/5c88a3f0ad8f412a88cfae02e361700b'},
+        {i:'🔗',t:'Movable Ink Learning Hub — continued education',u:'https://learning.movableink.com'},
+      ],
+      topics:[
+        'Own Studio ticket queue — handle independently with mentor spot-checks',
+        'Write complete escalation packages (issue + impact + steps + evidence + root cause)',
+        'Customer communication: technical clarity, tone, and expectation setting',
+        'Documentation: contribute one Notion or Guru card on a Studio topic',
+        'Final Studio scenario: preview vs production discrepancy end-to-end',
+      ],
+      ms:'By end of week 8 (Studio): Handles normal Studio tickets solo, writes complete escalation packages, and has contributed one internal Studio doc.',
+      msItems:['Handles Studio ticket queue independently','Quiz avg ≥80% on Studio modules','Submitted one Studio Notion or Guru card'],
+      cases:[],qid:'final'
+    },
+    dv:{
+      title:'Layer 3: Support — Da Vinci',layer:'l3',mode:'Investigate → Own',
+      obj:'Own Da Vinci tickets independently. Handle live queue, write complete escalation packages, and contribute one internal Da Vinci doc or Guru card.',
+      res:[
+        {i:'📄',t:'Technical Support Master Database — Notion',u:'https://app.notion.com/p/5c88a3f0ad8f412a88cfae02e361700b'},
+        {i:'📄',t:'CX Da Vinci Masters Resources FAQ — Guru',u:'https://app.getguru.com/card/TBqeAx5c/CX-Da-Vinci-Masters-Resources-FAQ'},
+        {i:'🔗',t:'Movable Ink Learning Hub — continued education',u:'https://learning.movableink.com'},
+      ],
+      topics:[
+        'Own DV ticket queue — handle independently with mentor spot-checks',
+        'Write complete DV escalation packages (issue + impact + steps + evidence + root cause)',
+        'Customer communication for DV: explaining decisioning outcomes clearly',
+        'Documentation: contribute one Notion or Guru card on a DV topic',
+        'Final DV scenario: full end-to-end SSO + user access + campaign issue',
+        'Scorecard review with manager: identify gaps for Q2 development',
+      ],
+      ms:'By end of week 8 (Da Vinci): Handles normal DV tickets solo, explains decisioning outcomes to clients, and has contributed one internal DV doc.',
+      msItems:['Overall scorecard ≥70% readiness','Quiz avg ≥80% across all modules','Submitted one DV Notion or Guru card','Passes final end-to-end scenario assessment'],
+      cases:[],qid:'final'
+    }
+  },
+  {
+    id:'w12',lbl:'Weeks 3–4',
     st:{
       title:'Layer 1: Understand — Studio',layer:'l1',mode:'Learn',
       obj:'Get oriented with Studio. Watch the WorkRamp library, understand the ecosystem, and learn Studio user access, roles, and invite workflows.',
@@ -316,7 +357,7 @@ const weeks=[
     }
   },
   {
-    id:'w34',lbl:'Weeks 3–4',
+    id:'w34',lbl:'Weeks 5–6',
     st:{
       title:'Layer 1: Understand (deeper) — Studio',layer:'l1',mode:'Learn',
       obj:'Deepen Studio knowledge — how content renders, what data sources do, and how Auth0 domain matching works. Start shadowing live Studio tickets.',
@@ -365,7 +406,7 @@ const weeks=[
     }
   },
   {
-    id:'w56',lbl:'Weeks 5–6',
+    id:'w56',lbl:'Weeks 7–8',
     st:{
       title:'Layer 2: Troubleshoot — Studio',layer:'l2',mode:'Practice → Shadow',
       obj:'Apply Studio knowledge to real past tickets. Investigate each case, understand what happened, and practice writing client-facing responses and escalation packages.',
@@ -427,44 +468,60 @@ const weeks=[
     }
   },
   {
-    id:'w78',lbl:'Weeks 7–8',
+    id:'w910',lbl:'Weeks 9–10',
     st:{
-      title:'Layer 3: Support — Studio',layer:'l3',mode:'Investigate → Own',
-      obj:'Own Studio tickets independently. Handle live queue, write full escalation packages, communicate clearly with clients, and contribute one internal doc or Guru card.',
+      title:'Layer 2: Platform Deep Dive — Studio',layer:'l2',mode:'Practice → Shadow',
+      obj:'Understand how Studio campaigns are built, the difference between Out-of-the-Box (OOTB) apps and Custom apps, and how to identify which type you are looking at when investigating a client ticket.',
       res:[
-        {i:'📄',t:'Technical Support Master Database — Notion',u:'https://app.notion.com/p/5c88a3f0ad8f412a88cfae02e361700b'},
-        {i:'🔗',t:'Movable Ink Learning Hub — continued education',u:'https://learning.movableink.com'},
+        {i:'📄',t:'How to Tell a Custom App vs an OOTB App Apart — Notion (TS Master DB)',u:'https://app.notion.com/p/f000eaccf56b465b80b93da137e46ba6'},
+        {i:'📄',t:'Anatomy of a Studio App — Notion (TS Master DB)',u:'https://app.notion.com/p/da42fac831be41a2933192ad27371feb'},
+        {i:'📄',t:'Create Apps in Studio Campaign Blocks — Notion',u:'https://app.notion.com/p/14af4102e3598026b6d2efdd15e06b1b'},
+        {i:'📄',t:'Using In-App Tools in Custom Studio Apps — Notion',u:'https://app.notion.com/p/136f4102e35980c088c5dd5ce0531b05'},
+        {i:'🔗',t:'Studio: Overview of In-App Messaging — Notion',u:'https://app.notion.com/p/130f4102e35981d8a5f1cf20cbae011f'},
+        {i:'🔗',t:'Movable Ink Learning Hub — Studio campaigns',u:'https://learning.movableink.com'},
       ],
       topics:[
-        'Own Studio ticket queue — handle independently with mentor spot-checks',
-        'Write complete escalation packages (issue + impact + steps + evidence + root cause)',
-        'Customer communication: technical clarity, tone, and expectation setting',
-        'Documentation: contribute one Notion or Guru card on a Studio topic',
-        'Final Studio scenario: preview vs production discrepancy end-to-end',
+        'How Studio campaigns are structured: targets, apps, data sources',
+        'What an Out-of-the-Box (OOTB) app is — countdown timers, add-to-calendar, data source apps — found in App Gallery',
+        'What a Custom App is — built by Solutions Development to do things OOTB cannot do',
+        'What a Custom Build is — an OOTB app embellished by MCS with Custom Properties, Custom Tools, and/or Javascript',
+        'How to identify a Custom App: look for var app = new AppName() in the Javascript panel',
+        'How to identify an OOTB App: the new line starts with studio followed by a machine-generated ID then .A()',
+        'How to identify a Custom Build: click Customize in the app editor — check Javascript panel, Custom Properties, and Custom Tools',
+        'Using the app Timeline (Creative Settings → App Details → Open Timeline) to see when custom properties were added',
+        'Why this matters for support: Custom Apps are owned by Solutions Dev, OOTB issues route to Tech Support or Engineering',
       ],
-      ms:'By end of week 8 (Studio): Handles normal Studio tickets solo, writes complete escalation packages, and has contributed one internal Studio doc.',
-      msItems:['Handles Studio ticket queue independently','Quiz avg ≥80% on Studio modules','Submitted one Studio Notion or Guru card'],
-      cases:[],qid:'final'
+      ms:'By end of week 10 (Studio): Can open any Studio app in a client campaign, identify whether it is OOTB, Custom Build, or Custom App, and route the issue to the correct team.',
+      msItems:['Can identify a Custom App vs OOTB vs Custom Build from the Javascript panel','Knows which escalation path applies to each app type','Handles a simulated Studio app investigation ticket independently'],
+      cases:[],qid:'studio_apps'
     },
     dv:{
-      title:'Layer 3: Support — Da Vinci',layer:'l3',mode:'Investigate → Own',
-      obj:'Own Da Vinci tickets independently. Handle live queue, write complete escalation packages, and contribute one internal Da Vinci doc or Guru card.',
+      title:'Layer 2: Platform Deep Dive — Da Vinci',layer:'l2',mode:'Practice → Shadow',
+      obj:'Learn how Da Vinci campaigns and creatives are built and how they work together. Understand the relationship between Templates, Content Blocks, and Creatives — and how to investigate issues at each layer.',
       res:[
-        {i:'📄',t:'Technical Support Master Database — Notion',u:'https://app.notion.com/p/5c88a3f0ad8f412a88cfae02e361700b'},
-        {i:'📄',t:'CX Da Vinci Masters Resources FAQ — Guru',u:'https://app.getguru.com/card/TBqeAx5c/CX-Da-Vinci-Masters-Resources-FAQ'},
-        {i:'🔗',t:'Movable Ink Learning Hub — continued education',u:'https://learning.movableink.com'},
+        {i:'📄',t:'Campaign Setup — Notion (TS Master DB)',u:'https://app.notion.com/p/20bf4102e35980a7972cef49a338ba52'},
+        {i:'📄',t:'How Campaigns and Creatives Work Together in Da Vinci — Notion',u:'https://app.notion.com/p/16ff4102e3598028a7bacecec86c650e'},
+        {i:'📄',t:'Getting Started with Campaigns in Da Vinci — Notion',u:'https://app.notion.com/p/1caf4102e359805ba548f0e95e363ab6'},
+        {i:'📄',t:'Configure Campaigns in Da Vinci — Notion',u:'https://app.notion.com/p/157f4102e3598065ba09c4ecf58f0f44'},
+        {i:'🔗',t:'DV Campaigns Guru — Campaign fields & content blocks',u:'https://app.getguru.com/folders/cg4rgGbi/DV-Campaigns?activeCard=d70a612d-5105-4e14-8d9c-185385f93396'},
+        {i:'🔗',t:'DV Campaigns Guru — Content blocks setup',u:'https://app.getguru.com/folders/cg4rgGbi/DV-Campaigns?activeCard=6d7703dc-8e61-475e-9829-f613c66e37ae'},
+        {i:'🔗',t:'Send Time Personalization (STP) — Guru',u:'https://app.getguru.com/cards/6d811f87-58ee-421c-a923-e883aad85384'},
+        {i:'🔗',t:'Learning Hub — How Campaigns and Creatives Work Together',u:'https://learning.movableink.com/integrating-campaigns-and-creatives'},
       ],
       topics:[
-        'Own DV ticket queue — handle independently with mentor spot-checks',
-        'Write complete DV escalation packages (issue + impact + steps + evidence + root cause)',
-        'Customer communication for DV: explaining decisioning outcomes clearly',
-        'Documentation: contribute one Notion or Guru card on a DV topic',
-        'Final DV scenario: full end-to-end SSO + user access + campaign issue',
-        'Scorecard review with manager: identify gaps for Q2 development',
+        'The four building blocks: Campaign (message experience), Template (layout), Content Block (placement), Creative (reusable content asset)',
+        'Static vs dynamic Content Blocks — static blocks show same content to all; dynamic blocks let Da Vinci choose eligible Creatives per recipient',
+        'How to create a Da Vinci campaign: click Create Campaign → name it → select Template → assign eligible Creatives to Content Blocks → set rules → proof → send',
+        'How to create a Da Vinci creative: upload text, images, and links → assign to one or more Content Block types → set eligibility rules, reuse limits, and audience guardrails',
+        'The setup sequence: build Template → build Creative library → configure Campaign → run Da Vinci model → analyze performance',
+        'How Da Vinci and the ESP work together: Da Vinci synchronizes Creative versions → supplies recipient-level recommendations → ESP assembles and sends → performance data returns to Da Vinci',
+        'Campaign proofing and tracking parameters — when TS intervention is needed',
+        'Send Time Personalization (STP): what it is, when NOT to use it (sends under 10k contacts), and where to find the Guru reference',
+        'Campaign troubleshooting: stuck Syncing state, ValidationError for incomplete content blocks, poor performance investigation',
       ],
-      ms:'By end of week 8 (Da Vinci): Handles normal DV tickets solo, explains decisioning outcomes to clients, and has contributed one internal DV doc.',
-      msItems:['Overall scorecard ≥70% readiness','Quiz avg ≥80% across all modules','Submitted one DV Notion or Guru card','Passes final end-to-end scenario assessment'],
-      cases:[],qid:'final'
+      ms:'By end of week 10 (Da Vinci): Understands the full campaign and creative setup flow, can explain why Campaigns and Creatives are separate, and can investigate a campaign configuration issue at the Template, Content Block, or Creative level.',
+      msItems:['Can explain the role of each building block (Campaign, Template, Content Block, Creative)','Can walk through the campaign setup sequence end-to-end','Investigates a simulated campaign config issue to the correct layer','Knows when to use STP and when not to'],
+      cases:[],qid:'dv_platform'
     }
   }
 ];
@@ -485,7 +542,7 @@ const quizData={
     {q:"A client's company is 'Stanley Morgan & Co.' Correct format for the SSO Troubleshooter?",opts:['Stanley Morgan & Co.','Stanley-Morgan-Co','stanleymorgan','StanleyMorganCo'],ans:2,exp:"Lowercase, no spaces, no special characters — must exactly match the Auth0 Connection Name. 'Stanley Morgan & Co.' → 'stanleymorgan'."},
     {q:"A client set up SSO for Da Vinci but users logging in via Studio still hit the standard login page. What is the most likely cause?",opts:["The SSO Troubleshooter was not run so SAML fields were never generated for Studio","Da Vinci and Studio use separate Auth0 connections — SSO must be configured independently for each platform","The X509 certificate expired during setup","The Auth0 Login Experience tab was not configured"],ans:1,exp:"Da Vinci and Studio run on separate Auth0 connections. Setting up SSO for one does not carry over to the other. Each platform requires its own SAML setup in Auth0 with the correct set of applications enabled."},
     {q:'A Merkle (vendor) user needs access to a Gap account in Da Vinci. Where do you add them?',opts:['Directly to the Gap organization','Merkle organization first, then add to the Gap account separately','Both Gap and Merkle simultaneously','Skip the org — add directly at account level'],ans:1,exp:'Vendors go into their own org (Merkle), never the client org (Gap). Then add them to the specific account(s) they need.'},
-    {q:'A client emails you saying SSO worked yesterday but today users get redirected to the standard login page. What do you check first?',opts:["Re-create the entire SSO connection in Auth0 from scratch","Check the Auth0 connection is still enabled and the X509 certificate has not expired — a cert rotation on the client IdP is a common cause of sudden SSO failures","Ask the client to clear their browser cache and try again","Check if the Okta tile was removed by the client's IT team"],ans:1,exp:"A sudden SSO failure that worked previously is almost always a certificate issue — the client's IdP cert was rotated without updating Auth0. Check Auth0 logs for the specific error, then verify the cert thumbprint. If there is a mismatch, request a fresh PEM or CER cert from the client."},
+    {q:'A client emails you saying SSO worked yesterday but today users get redirected to the standard login page. What do you check first?',opts:["Re-create the entire SSO connection in Auth0 from scratch","Check the Auth0 connection is still enabled and the X509 certificate has not expired — a cert rotation on the client IdP is a common cause of sudden SSO failures","Ask the client to clear their browser cache and try again","Check if the Okta tile was removed by the client IT team"],ans:1,exp:"A sudden SSO failure that worked previously is almost always a certificate issue — the client's IdP cert was rotated without updating Auth0. Check Auth0 logs for the specific error, then verify the cert thumbprint. If there is a mismatch, request a fresh PEM or CER cert from the client."},
     {q:"A Da Vinci campaign is stuck on 'Syncing' and the client has already tried unlocking and re-locking it. What is your next step?",opts:["Tell the client to wait 24 hours and it will resolve","Check the campaign's run logs for errors, confirm the audience lock state in the platform, and check if a manual sync trigger is needed — then escalate to Engineering with the campaign ID if the state does not clear","Ask the client to delete the campaign and recreate it","Reassign the ticket to the CXM"],ans:1,exp:"A stuck Syncing state after unlock/re-lock usually means the sync job failed silently. Check the campaign run logs for a related error, confirm the audience tab status, and note the campaign ID and platform ID before escalating to Engineering — they need this to investigate the job state."},
     {q:"An automated alert fires: a Da Vinci standard run failed with 'ValidationError: contacts suppressed for incomplete content blocks'. What does this mean and what do you do?",opts:["The campaign audience is empty — ask the client to re-upload their contact list","One or more content blocks in the campaign have missing or incomplete creative content, causing those contacts to be suppressed. Identify the campaign ID, content block ID, and position from the error, then work with the client or CXM to fill the incomplete block","The run ID is invalid — re-trigger the run","The client's ESP rejected the send — contact the ESP"],ans:1,exp:"A ValidationError for incomplete content blocks means the campaign tried to run but at least one content block had no eligible creative for a large portion of contacts. The error output shows the campaign ID, position, and content block ID. Use these to locate the block in Da Vinci and identify what creative content is missing or misconfigured."},
   ]},
@@ -512,6 +569,21 @@ const quizData={
     {q:"On CB2 (ZD #352051), the platform showed 'email already taken' when inviting a user to a second account. Cause?",opts:['A bug in the invite system',"User's email already exists in DV (in another account) — add them to the additional account directly, do not re-invite","SSO connection is broken","User needs a new email address"],ans:1,exp:"'Email already taken' means the user already exists in Da Vinci. Don't re-invite — add them to the additional account directly from within that account's user management page."},
     {q:'On the Gap cert renewal (ZD #355010), what did Engineering do vs TS?',opts:['TS did everything','Engineering generated the 4096-bit CSR; TS coordinated the handoff, processed the signed cert from Gap, and confirmed renewal across all domains','TS generated the CSR and Eng processed the cert','Client managed the entire renewal'],ans:1,exp:'Cert renewal split: Engineering generates the CSR, TS coordinates the client handoff and processes the signed cert when returned, then confirms renewal is live across all client domains.'},
   ]},
+
+  studio_apps:{title:'Wk 9-10 Quiz: Studio App Types',qs:[
+    {q:'You open a Studio app Javascript panel and see: const app = new studioEa2D0Aa9.A(); What type of app is this?',opts:['Custom App built by Solutions Dev','Out-of-the-Box (OOTB) app','Custom Build with extra Javascript','Da Vinci creative'],ans:1,exp:'OOTB apps initialize with a machine-generated ID in the format studioXXXXXXXX.A(). Custom Apps use var app = new AppName() where AppName matches the title in the App Gallery.'},
+    {q:'You open a Studio app Javascript panel and see: var app = new ElasticUpcomingWebinarsByTheme145675(); What type of app is this?',opts:['An OOTB app','A Custom App built by Solutions Dev','A Custom Build','A data source app'],ans:1,exp:'Custom Apps initialize a new named instance in their Javascript panel. The name usually matches the app title in the App Gallery. This distinguishes Custom Apps from OOTB apps.'},
+    {q:'What is a Custom Build in Studio?',opts:['A brand new app built from scratch by MCS','An OOTB app embellished with Custom Properties, Custom Tools, or Javascript by MCS','An app imported from a third-party','A Da Vinci app embedded in Studio'],ans:1,exp:'A Custom Build is an OOTB app at its core. MCS has added Custom Properties, Custom Tools, or Javascript on top to achieve additional functionality.'},
+    {q:'Where do you look to confirm Custom Properties were added to a Studio app?',opts:['The App Gallery page','Creative Settings > App Details > Open Timeline, and the Customize panel (Javascript, Custom Properties, Custom Tools)','The Da Vinci organizations page','The Auth0 dashboard'],ans:1,exp:'Click Customize in the bottom left while editing an app to see the Javascript panel, Custom Properties, and Custom Tools. You can also check the app Timeline under Creative Settings > App Details > Open Timeline.'},
+    {q:'A Custom App is broken. Who owns the fix?',opts:['Tech Support investigates and fixes it directly','Solutions Dev owns Custom Apps — escalate there, not to TS or Engineering','The client IT team','CXM handles all Custom App issues'],ans:1,exp:'Custom Apps are built and owned by Solutions Development. When a Custom App breaks, the escalation goes to Solutions Dev — not to Engineering or TS to debug directly.'},
+  ]},
+  dv_platform:{title:'Wk 9-10 Quiz: Da Vinci Campaigns and Creatives',qs:[
+    {q:'In Da Vinci, what is the correct relationship between Campaign, Template, Content Block, and Creative?',opts:['Campaign = layout, Template = experience, Content Block = asset, Creative = placement','Campaign = message experience, Template = layout, Content Block = placement, Creative = reusable content asset','Campaign = asset, Template = placement, Content Block = layout, Creative = experience','They are all interchangeable terms'],ans:1,exp:'Campaign = the full message experience. Template = the layout inside the Campaign. Content Block = the placement inside the Template. Creative = the reusable content asset that fills a Content Block.'},
+    {q:'A Content Block in a Da Vinci Campaign is set as static. What does this mean?',opts:['The block is broken and needs fixing','The same content appears for every recipient — used for logos, footers, navigation','Da Vinci chooses a different Creative for each recipient from eligible options','The Creative inside cannot be edited'],ans:1,exp:'Static Content Blocks show the same content to every eligible recipient. They are used for fixed brand elements like logos, headers, and footers. Dynamic Content Blocks are where Da Vinci personalizes by choosing from multiple eligible Creatives.'},
+    {q:'What is the correct Da Vinci campaign setup sequence?',opts:['Configure Campaign, Build Template, Upload Creatives, Run model, Analyze','Build Template, Build Creative library, Configure Campaign, Run Da Vinci model, Analyze performance','Upload Creatives, Run model, Configure Campaign, Build Template, Analyze','Run model first, then build Template and Creatives'],ans:1,exp:'Correct sequence: 1) Build Template structure, 2) Build Creative library, 3) Configure Campaign, 4) Run Da Vinci model, 5) Analyze performance.'},
+    {q:'Two recipients received different Main Story Creatives in the same Da Vinci campaign send. What is the correct explanation?',opts:['A bug caused the wrong Creative to be served','The Main Story is a dynamic Content Block — Da Vinci selected a different eligible Creative for each recipient based on eligibility rules','The client uploaded duplicate Creatives','The Template was configured incorrectly'],ans:1,exp:'This is expected Da Vinci behavior. Dynamic Content Blocks allow Da Vinci to choose from multiple eligible Creatives. The marketer sets the rules; Da Vinci selects the best fit for each recipient within those rules.'},
+    {q:'When should Send Time Personalization (STP) NOT be used in a Da Vinci campaign?',opts:['For campaigns with more than 100k contacts','For sends under 10k contacts — STP can cause scheduling issues at low volumes','STP should always be used for every campaign','STP should never be used for email'],ans:1,exp:'STP sends emails at the optimal time of day for each contact. It should not be used for sends under 10k contacts because it can cause scheduling issues. Check the Guru STP doc for the full list of edge cases.'},
+  ]},
   final:{title:'Wk 7–8 · Final Assessment',qs:[
     {q:'A client emails support@ about a new DV user who accepted the invite, set a password, but hit a 404. No account managers. What do you do?',opts:['Add the user yourself since there are no managers','Log in Okta/Zendesk, CC the CXM and company email alias, confirm with CXM in Slack, then investigate Auth0 and Django before taking action','Tell client to contact their IT department','Escalate to Engineering immediately'],ans:1,exp:"No managers doesn't mean you act unilaterally. Log in Okta/Zendesk, CC CXM and company alias, confirm before acting. Investigate Auth0 history and Django to diagnose the 404 root cause — don't just resend the invite."},
     {q:'What must a complete escalation package include?',opts:['Just the ZD ticket link','Issue, customer impact, expected vs actual behavior, steps to reproduce, investigation performed, evidence, suspected root cause, and urgency','A screenshot and the customer email','Only the ZD ticket number'],ans:1,exp:'A complete escalation package has all 8 elements. Missing any slows Engineering down significantly.'},
@@ -526,7 +598,7 @@ const quizData={
 const scores={};
 const qzScores={};
 let curQuiz=null,curQ=0,curAns=[];
-const activeWeek={schedule:'w12',scorecard:'w12',quizzes:'w12'};
+const activeWeek={schedule:'w78',scorecard:'w78',quizzes:'w78'};
 
 // ─────────────────────────────────────────────
 // MAIN TAB
