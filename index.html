@@ -195,6 +195,13 @@ body{
 .q-score-sub{font-size:13px;color:rgba(255,255,255,0.45);margin-top:4px}
 .q-retry{margin-top:14px;font-size:12px;padding:7px 18px;border-radius:8px;
   border:0.5px solid rgba(255,255,255,0.11);background:rgba(255,255,255,0.04);color:#fff;cursor:pointer}
+
+.cs-intro{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;line-height:1.5}
+.cs-group-hdr{font-size:12px;font-weight:600;color:#fff;padding:8px 12px;
+  background:rgba(227,28,121,0.1);border:0.5px solid rgba(227,28,121,0.22);
+  border-radius:8px;margin:18px 0 8px;display:flex;align-items:center;gap:8px}
+.cs-group-hdr:first-child{margin-top:0}
+.cs-group-icon{font-size:14px}
 </style>
 
 <!-- HEADER -->
@@ -218,12 +225,18 @@ body{
   <div class="tab active" onclick="switchMain('schedule',this)">Training schedule</div>
   <div class="tab" onclick="switchMain('scorecard',this)">Progress scorecard</div>
   <div class="tab" onclick="switchMain('quizzes',this)">Quizzes</div>
+  <div class="tab" onclick="switchMain('cases',this)">Case Studies</div>
 </div>
 
 <!-- SCHEDULE -->
 <div class="view show" id="view-schedule">
   <div class="week-tab-row" id="sch-week-tabs"></div>
   <div id="sch-week-panels"></div>
+</div>
+
+<!-- CASE STUDIES -->
+<div class="view" id="view-cases">
+  <div id="cs-content"></div>
 </div>
 
 <!-- SCORECARD -->
@@ -592,6 +605,74 @@ const quizData={
   ]}
 };
 
+
+// ─────────────────────────────────────────────
+// CASE STUDIES
+// ─────────────────────────────────────────────
+const caseGroups=[
+  {
+    icon:'🔐',header:'Login & Okta tickets — Studio',
+    cases:[
+      {type:'zd',badge:'ZD #352902',title:'Gap Inc — emergency password reset for all Studio/DV users',body:'Gap flagged a security compromise and asked MI to wipe all passwords. Learn: what MI can/cannot do for bulk resets, how to scope a security-related access request, and how to coordinate with InfoSec.',zdUrl:'https://movableink.zendesk.com/agent/tickets/352902'},
+      {type:'zd',badge:'ZD #353941',title:'Paysafe — user locked out after 2FA reset, authenticator code always invalid',body:'User switched phones (Android to iPhone) and could not log in after multiple 2FA resets. Both authenticators returned invalid code. Learn: how to investigate persistent 2FA failures and when to involve Engineering.',zdUrl:'https://movableink.zendesk.com/agent/tickets/353941'},
+      {type:'zd',badge:'ZD #338254',title:'Currys — DV access request for existing Studio user',body:'Client requested DV access for a user who already had Studio access. Classic pattern: client assumes Studio access = DV access. Learn: that the two platforms are entirely separate.',zdUrl:'https://movableink.zendesk.com/agent/tickets/338254'},
+    ]
+  },
+  {
+    icon:'🔑',header:'SSO setup tickets',
+    cases:[
+      {type:'zd',badge:'ZD #354602',title:'Rocket Companies — SSO setup with child accounts and XML file',body:'Client submitted an XML file instead of individual SAML fields. Parent org with 3 child accounts. Learn: how to extract SAML fields from the SSO Troubleshooter and handle non-standard submissions.',zdUrl:'https://movableink.zendesk.com/agent/tickets/354602',slackUrl:'https://ink.enterprise.slack.com/archives/C0B969VUR7A/p1787591434682279'},
+      {type:'sl',badge:'Slack — Rocket SSO live thread',title:'Nizam + Bryan Pyle: real-time SSO setup',body:'See how TS and CX collaborate to gather org structure, generate SAML fields, handle the XML edge case, and request the X509 cert in PEM/CER format.',slackUrl:'https://ink.enterprise.slack.com/archives/C0B969VUR7A/p1787591434682279'},
+      {type:'zd',badge:'ZD #352523',title:'Mercedes-Benz — SSO setup, client mid-SAML config',body:'Client needed more time to complete their SAML config. Learn: correct follow-up cadence when a client goes quiet mid-setup and when to set a reminder vs escalate.',zdUrl:'https://movableink.zendesk.com/agent/tickets/352523'},
+      {type:'zd',badge:'ZD #354503',title:'REI — SSO setup, Azure SAML, cert format blocked',body:'Client sent cert in wrong format. Learn: what a well-formed SSO request looks like, how to ask for PEM/CER resubmission, and the no-encryption setup path.',zdUrl:'https://movableink.zendesk.com/agent/tickets/354503'},
+      {type:'sl',badge:'Slack — Jetstar SSO login loop',title:'SSO debug: client sent the wrong SAML login URL',body:'Jetstar users stuck in a double-login/MFA loop. Client sent auth.movableink.com/login instead of their IDP URL. Learn: how to identify a wrong SAML URL and hold off on Eng escalation.',slackUrl:'https://ink.enterprise.slack.com/archives/C0AQCK7S5J6/p1788995090267219'},
+    ]
+  },
+  {
+    icon:'👥',header:'DV user management tickets',
+    cases:[
+      {type:'zd',badge:'ZD #355465',title:'Kohls — recurring new user 404 on DV invite',body:'Users accepted invite, set password, then landed on a 404. Learn: how to investigate Auth0 and Django, identify org vs account level issues, and push for a long-term fix.',zdUrl:'https://movableink.zendesk.com/agent/tickets/355465',slackUrl:'https://ink.enterprise.slack.com/archives/C0AQCK7S5J6/p1788354398351219'},
+      {type:'zd',badge:'ZD #352051',title:'CB2 — email already taken when inviting user to second account',body:'User had Crate access but not CB2 US or CA. Platform blocked invite with email already taken error. Learn: how to add existing users to additional accounts without re-inviting.',zdUrl:'https://movableink.zendesk.com/agent/tickets/352051'},
+      {type:'sl',badge:'Slack — DV invite emails not received',title:'Crate and Barrel: SC-219868 — DV invite emails not delivered',body:'Users were not receiving invite emails despite successful sends. Eng marked Not a Bug but issue persisted. Learn: email delivery investigation and re-escalation after an Eng close.',slackUrl:'https://ink.enterprise.slack.com/archives/C04RPJN7HUN/p1789497794323049'},
+      {type:'sl',badge:'Slack — Okta access request pattern',title:'Processing routine Okta access requests',body:'Multiple Okta requests in the daily queue. Learn: what they look like, how quickly to action them, and distinguishing routine requests from those needing CXM approval.',slackUrl:'https://ink.enterprise.slack.com/archives/C0AQCK7S5J6/p1789081509110719'},
+      {type:'zd',badge:'Okta #8930',title:'Successful Okta access request — new user granted DV access',body:'A routine Okta access request processed without issues. Learn: what a well-formed access request looks like, how quickly it should be actioned, and what the approval flow looks like.',zdUrl:'https://movableink.at.okta.com/next/requests/8930'},
+      {type:'zd',badge:'Okta #8926',title:'Successful Okta request — company name and org setting change',body:'A simple org name or company setting change processed via Okta. Learn: how name change and org config requests come in, what information is needed, and what a clean resolution looks like.',zdUrl:'https://movableink.at.okta.com/next/requests/8926'},
+    ]
+  },
+  {
+    icon:'🔒',header:'SSL certificate renewal tickets',
+    cases:[
+      {type:'zd',badge:'ZD #355987',title:'Chewy — successful SSL cert installation (simple example)',body:'A clean, resolved cert installation ticket. Read this to understand what a standard cert install looks like from start to finish — the request, the back-and-forth, and what a successful close looks like.',zdUrl:'https://movableink.zendesk.com/agent/tickets/355987'},
+      {type:'zd',badge:'ZD #355489',title:'Kohls — emergency cert migration to Lets Encrypt',body:'Client migrating cert provider with hard Sept 18 deadline. Learn: emergency cert tickets, what MI can and cannot manage, and cert installation workflow.',zdUrl:'https://movableink.zendesk.com/agent/tickets/355489'},
+      {type:'zd',badge:'ZD #355010',title:'Gap Inc — SSL cert renewal, CSR to signed cert flow',body:'Eng generated 4096-bit CSR, Gap signed and returned. Learn: the full cert renewal back-and-forth and what Engineering vs TS owns.',zdUrl:'https://movableink.zendesk.com/agent/tickets/355010',slackUrl:'https://ink.enterprise.slack.com/archives/C0AQCK7S5J6/p1788390356451749'},
+    ]
+  },
+  {
+    icon:'⚙️',header:'DV campaign and run failure tickets',
+    cases:[
+      {type:'zd',badge:'ZD #357151',title:'PB Kids — Da Vinci campaign stuck on Syncing',body:'Campaign was stuck on Syncing despite the client trying to unlock and re-lock it. Learn: what a campaign sync failure looks like, what to check first, and how to resolve or escalate.',zdUrl:'https://movableink.zendesk.com/agent/tickets/357151'},
+      {type:'zd',badge:'ZD #357137',title:'Ballard Designs — standard run failed: ValidationError incomplete content blocks',body:'Automated run alert: 2 campaigns failed with a ValidationError — contacts suppressed due to incomplete content blocks. Learn: how to read a DV run failure alert and investigate which block is incomplete.',zdUrl:'https://movableink.zendesk.com/agent/tickets/357137'},
+    ]
+  }
+];
+
+function buildCaseStudies(){
+  const el=document.getElementById('cs-content');
+  if(!el) return;
+  let h='<div class="cs-intro">All past tickets and Slack threads in one place, organised by type. Click any link to open the original ticket or thread.</div>';
+  caseGroups.forEach(g=>{
+    h+=`<div class="cs-group-hdr"><span class="cs-group-icon">${g.icon}</span>${g.header}</div>`;
+    g.cases.forEach(c=>{
+      const bc=c.type==='sl'?'sl':'zd';
+      let lk='';
+      if(c.zdUrl) lk+=`<a class="case-link" href="${c.zdUrl}" target="_blank">Open ZD ticket ↗</a>`;
+      if(c.slackUrl) lk+=`<a class="case-link" href="${c.slackUrl}" target="_blank">Open Slack thread ↗</a>`;
+      h+=`<div class="case-card"><div class="case-top"><span class="c-badge ${bc}">${c.badge}</span><span class="case-title">${c.title}</span></div><div class="case-body">${c.body}</div><div class="case-links">${lk}</div></div>`;
+    });
+  });
+  el.innerHTML=h;
+}
+
 // ─────────────────────────────────────────────
 // STATE
 // ─────────────────────────────────────────────
@@ -608,6 +689,7 @@ function switchMain(id,el){
   el.classList.add('active');
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
   document.getElementById('view-'+id).classList.add('show');
+  if(id==='cases') buildCaseStudies();
 }
 
 // ─────────────────────────────────────────────
